@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="note_item_margin">4dp</dimen>
+    <dimen name="note_title_margin">8dp</dimen>
+    <dimen name="note_content_margin">8dp</dimen>
+</resources>
