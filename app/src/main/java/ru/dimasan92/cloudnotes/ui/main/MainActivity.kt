@@ -6,8 +6,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dimasan92.cloudnotes.R
+import ru.dimasan92.cloudnotes.data.model.Note
+import ru.dimasan92.cloudnotes.ui.note.NoteActivity
 import ru.dimasan92.cloudnotes.utils.view.LayoutUtils
-import ru.dimasan92.cloudnotes.utils.view.LayoutUtils.*
+import ru.dimasan92.cloudnotes.utils.view.LayoutUtils.Type
 import ru.dimasan92.cloudnotes.utils.view.LayoutUtilsImpl
 
 class MainActivity : AppCompatActivity() {
@@ -26,9 +28,19 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         mainRecycler.layoutManager = layoutUtils.getAdjustedLayoutManager(Type.STAGGERED)
-        adapter = MainAdapter()
+        adapter = MainAdapter(object : MainAdapter.OnItemClickListener {
+            override fun invoke(note: Note) {
+                openNoteScreen(note)
+            }
+        })
         mainRecycler.adapter = adapter
 
         viewModel.viewState().observe(this, Observer { t -> t?.let { adapter.notes = it.notes } })
+
+        fab.setOnClickListener { openNoteScreen(null) }
+    }
+
+    private fun openNoteScreen(note: Note?) {
+        startActivity(NoteActivity.getStartIntent(this, note))
     }
 }
