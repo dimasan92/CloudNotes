@@ -1,13 +1,13 @@
 package ru.dimasan92.cloudnotes.ui.main
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dimasan92.cloudnotes.R
 import ru.dimasan92.cloudnotes.data.model.Note
 import ru.dimasan92.cloudnotes.ui.base.BaseActivity
 import ru.dimasan92.cloudnotes.ui.note.NoteActivity
+import ru.dimasan92.cloudnotes.utils.view.LayoutUtils
 import ru.dimasan92.cloudnotes.utils.view.LayoutUtilsImpl
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
@@ -23,6 +23,8 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
 
+        mainRecycler.layoutManager =
+            layoutUtils.getAdjustedLayoutManager(LayoutUtils.Type.STAGGERED)
         mainRecycler.adapter = adapter
         fab.setOnClickListener { openNoteScreen(null) }
     }
@@ -32,6 +34,6 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
     }
 
     private fun openNoteScreen(note: Note?) {
-        startActivity(NoteActivity.getStartIntent(this, note))
+        startActivity(NoteActivity.getStartIntent(this, note?.id ?: ""))
     }
 }

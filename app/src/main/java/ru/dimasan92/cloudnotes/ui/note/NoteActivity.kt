@@ -23,8 +23,8 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     companion object {
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
 
-        fun getStartIntent(context: Context, note: Note?) =
-            Intent(context, NoteActivity::class.java).apply { putExtra(EXTRA_NOTE, note) }
+        fun getStartIntent(context: Context, noteId: String) =
+            Intent(context, NoteActivity::class.java).apply { putExtra(EXTRA_NOTE, noteId) }
     }
 
     override val viewModel by lazy { ViewModelProviders.of(this).get(NoteViewModel::class.java) }
@@ -96,7 +96,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
                 lastChanged = Date()
             ) ?: createNewNote()
 
-            if (note != null) viewModel.saveChanges(note!!)
+            note?.let {  viewModel.saveChanges(it)}
         }, SAVE_DELAY)
     }
 
