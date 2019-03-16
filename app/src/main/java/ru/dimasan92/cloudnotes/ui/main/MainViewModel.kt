@@ -1,20 +1,30 @@
 package ru.dimasan92.cloudnotes.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
 import ru.dimasan92.cloudnotes.data.Repository
+import ru.dimasan92.cloudnotes.data.model.Note
+import ru.dimasan92.cloudnotes.data.model.NoteResult
+import ru.dimasan92.cloudnotes.ui.base.BaseViewModel
 
-class MainViewModel(repository: Repository = Repository) : ViewModel() {
+class MainViewModel(repository: Repository = Repository) :
+    BaseViewModel<List<Note>?, MainViewState>() {
 
-    private val viewStateLiveData = MutableLiveData<MainViewState>()
-
-    init {
-        repository.getNotes().observeForever {
-            viewStateLiveData.value =
-                viewStateLiveData.value?.copy(notes = it!!) ?: MainViewState(it!!)
+    private val notesObserver = Observer<NoteResult> {
+        it ?: return@Observer
+        when (it) {
+            is NoteResult.Success<*> -> viewStateLiveData.value =
+                MainViewState(notes = it.data as? List<Note>)
+            is NoteResult.Error -> viewStateLiveData.value = MainViewState(error = it.error)
         }
     }
+    private val repositoryNotes = repository.getNotes()
+        .apply { observeForever(notesObserver) }
 
-    fun viewState(): LiveData<MainViewState> = viewStateLiveData
+    init {
+        viewStateLiveData.value = MainViewState()
+    }
+
+    override fun onCleared() {
+        repositoryNotes.removeObserver(notesObserver)
+    }
 }

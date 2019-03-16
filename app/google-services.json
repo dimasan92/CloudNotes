@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "13986090926",
+    "firebase_url": "https://cloudnotes-6c0ff.firebaseio.com",
+    "project_id": "cloudnotes-6c0ff",
+    "storage_bucket": "cloudnotes-6c0ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13986090926:android:7075ca7a2e076c09",
+        "android_client_info": {
+          "package_name": "ru.dimasan92.cloudnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13986090926-l3tkt5k8mceq60oodde056iqfjm4r3mv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwjLtCORCOKyy6MKmY2jPWZ8dWRvMi4jM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

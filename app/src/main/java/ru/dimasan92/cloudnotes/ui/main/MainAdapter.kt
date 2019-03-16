@@ -10,12 +10,8 @@ import ru.dimasan92.cloudnotes.R
 import ru.dimasan92.cloudnotes.data.model.Color
 import ru.dimasan92.cloudnotes.data.model.Note
 
-class MainAdapter(private val onItemClickListener: OnItemClickListener) :
+class MainAdapter(private val onItemClickListener: (note: Note) -> Unit) :
     RecyclerView.Adapter<MainAdapter.NoteViewHolder>() {
-
-    interface OnItemClickListener {
-        operator fun invoke(note: Note)
-    }
 
     var notes = listOf<Note>()
         set(value) {

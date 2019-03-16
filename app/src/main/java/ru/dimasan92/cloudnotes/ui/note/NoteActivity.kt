@@ -7,20 +7,18 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_note.*
 import ru.dimasan92.cloudnotes.R
 import ru.dimasan92.cloudnotes.data.model.Color
 import ru.dimasan92.cloudnotes.data.model.Note
-import ru.dimasan92.cloudnotes.extensions.DATE_TIME_FORMAT
-import java.text.SimpleDateFormat
+import ru.dimasan92.cloudnotes.ui.base.BaseActivity
 import java.util.*
 
 private const val SAVE_DELAY = 2000L
 
-class NoteActivity : AppCompatActivity() {
+class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     companion object {
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
@@ -29,35 +27,34 @@ class NoteActivity : AppCompatActivity() {
             Intent(context, NoteActivity::class.java).apply { putExtra(EXTRA_NOTE, note) }
     }
 
-    private lateinit var viewModel: NoteViewModel
+    override val viewModel by lazy { ViewModelProviders.of(this).get(NoteViewModel::class.java) }
+    override val layoutRes = R.layout.activity_note
     private var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note)
 
-        viewModel = ViewModelProviders.of(this).get(NoteViewModel::class.java)
-        note = intent.getParcelableExtra(EXTRA_NOTE)
+        val noteId = intent.getStringExtra(EXTRA_NOTE)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        supportActionBar?.title = if (note != null) {
-            SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(note!!.lastChanged)
-        } else {
-            getString(R.string.new_note_title)
+        noteId?.let { viewModel.loadNote(it) } ?: supportActionBar?.apply {
+            title = getString(R.string.new_note_title)
         }
 
+        titleEt.addTextChangedListener(textChangeListener)
+        bodyEt.addTextChangedListener(textChangeListener)
+    }
+
+    override fun renderData(data: Note?) {
+        note = data
         initView()
     }
 
     private fun initView() {
-        titleEt.addTextChangedListener(textChangeListener)
-        bodyEt.addTextChangedListener(textChangeListener)
-
-        if (note != null) {
-            titleEt.setText(note?.title ?: "")
-            bodyEt.setText(note?.body ?: "")
-            val color = when (note!!.color) {
+        note?.let {
+            titleEt.setText(it.title)
+            bodyEt.setText(it.body)
+            val color = when (it.color) {
                 Color.WHITE -> R.color.color_white
                 Color.VIOLET -> R.color.color_violet
                 Color.YELLOW -> R.color.color_yellow
@@ -66,7 +63,6 @@ class NoteActivity : AppCompatActivity() {
                 Color.GREEN -> R.color.color_green
                 Color.BLUE -> R.color.color_blue
             }
-
             toolbar.setBackgroundColor(ContextCompat.getColor(this, color))
         }
     }
