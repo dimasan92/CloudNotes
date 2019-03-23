@@ -7,12 +7,12 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_note.*
 import ru.dimasan92.cloudnotes.R
-import ru.dimasan92.cloudnotes.data.model.Color
 import ru.dimasan92.cloudnotes.data.model.Note
+import ru.dimasan92.cloudnotes.extensions.format
+import ru.dimasan92.cloudnotes.extensions.getColorInt
 import ru.dimasan92.cloudnotes.ui.base.BaseActivity
 import java.util.*
 
@@ -51,19 +51,11 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     private fun initView() {
-        note?.let {
-            titleEt.setText(it.title)
-            bodyEt.setText(it.body)
-            val color = when (it.color) {
-                Color.WHITE -> R.color.color_white
-                Color.VIOLET -> R.color.color_violet
-                Color.YELLOW -> R.color.color_yellow
-                Color.RED -> R.color.color_red
-                Color.PINK -> R.color.color_pink
-                Color.GREEN -> R.color.color_green
-                Color.BLUE -> R.color.color_blue
-            }
-            toolbar.setBackgroundColor(ContextCompat.getColor(this, color))
+        note?.run {
+            supportActionBar?.title = lastChanged.format()
+            titleEt.setText(title)
+            bodyEt.setText(body)
+            toolbar.setBackgroundColor(color.getColorInt(this@NoteActivity))
         }
     }
 
@@ -96,7 +88,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
                 lastChanged = Date()
             ) ?: createNewNote()
 
-            note?.let {  viewModel.saveChanges(it)}
+            note?.let { viewModel.saveChanges(it) }
         }, SAVE_DELAY)
     }
 

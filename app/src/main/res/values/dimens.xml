@@ -3,4 +3,8 @@
     <dimen name="note_item_margin">4dp</dimen>
     <dimen name="note_title_margin">8dp</dimen>
     <dimen name="note_content_margin">8dp</dimen>
+
+    <dimen name="main_fab_margin">16dp</dimen>
+
+    <dimen name="splash_screen_margin_top">12dp</dimen>
 </resources>
