@@ -1,7 +1,7 @@
 package ru.dimasan92.cloudnotes.ui.splash
 
 import android.os.Handler
-import androidx.lifecycle.ViewModelProviders
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dimasan92.cloudnotes.R
 import ru.dimasan92.cloudnotes.ui.base.BaseActivity
 import ru.dimasan92.cloudnotes.ui.main.MainActivity
@@ -10,9 +10,7 @@ private const val START_DELAY = 1000L
 
 class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
 
-    override val viewModel: SplashViewModel by lazy {
-        ViewModelProviders.of(this).get(SplashViewModel::class.java)
-    }
+    override val viewModel: SplashViewModel by viewModel()
 
     override val layoutRes = R.layout.activity_splash
 
@@ -22,9 +20,15 @@ class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
     }
 
     override fun renderData(data: Boolean?) {
-        data?.takeIf {it}?.let {
+        data?.takeIf { it }?.let {
             startMainActivity()
         }
+    }
+
+    override fun showLoading() {
+    }
+
+    override fun hideLoading() {
     }
 
     private fun startMainActivity() {

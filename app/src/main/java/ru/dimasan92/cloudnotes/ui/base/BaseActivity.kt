@@ -21,10 +21,12 @@ abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutRes)
+        showLoading()
         viewModel.getViewState().observe(this, Observer { viewState ->
             viewState?.apply {
                 data?.let { renderData(it) }
                 error?.let { renderError(it) }
+                hideLoading()
             }
         })
     }
@@ -60,6 +62,9 @@ abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
     }
 
     abstract fun renderData(data: T)
+    abstract fun showLoading()
+    abstract fun hideLoading()
+
 
     protected fun showError(error: String) {
         Snackbar.make(mainRecycler, error, Snackbar.LENGTH_INDEFINITE).apply {

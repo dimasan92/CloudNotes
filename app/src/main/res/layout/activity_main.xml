@@ -21,10 +21,17 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_note" />
 
@@ -32,12 +39,13 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
         android:layout_marginEnd="@dimen/main_fab_margin"
         android:layout_marginBottom="@dimen/main_fab_margin"
-        app:layout_anchorGravity="bottom|end"
         android:src="@drawable/ic_add_black_24dp"
+        android:visibility="gone"
+        app:fabSize="normal"
         app:layout_anchor="@id/mainRecycler"
-        app:layout_behavior=".ui.common.FABBehavior"/>
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior=".ui.common.FABBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -42,6 +42,13 @@ dependencies {
     // kotlin
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // Anko
+    implementation "org.jetbrains.anko:anko-commons:0.10.7"
+
+    // DI
+    implementation 'org.koin:koin-android:1.0.2'
+    implementation 'org.koin:koin-android-viewmodel:1.0.2'
+
     //android
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"

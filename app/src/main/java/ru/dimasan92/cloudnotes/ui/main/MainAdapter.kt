@@ -3,9 +3,10 @@ package ru.dimasan92.cloudnotes.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_note.*
 import ru.dimasan92.cloudnotes.R
 import ru.dimasan92.cloudnotes.data.model.Color
 import ru.dimasan92.cloudnotes.data.model.Note
@@ -34,9 +35,8 @@ class MainAdapter(private val onItemClickListener: (note: Note) -> Unit) :
         holder.bind(notes[position])
     }
 
-    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val noteTitle = itemView.findViewById<TextView>(R.id.title)
-        private val noteBody = itemView.findViewById<TextView>(R.id.body)
+    inner class NoteViewHolder(override val containerView: View) :
+        RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bind(note: Note) {
             val color = when (note.color) {
@@ -49,11 +49,9 @@ class MainAdapter(private val onItemClickListener: (note: Note) -> Unit) :
                 Color.BLUE -> R.color.color_blue
             }
 
-            with(note) {
-                noteTitle.text = title
-                noteBody.text = body
-                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, color))
-            }
+            title.text = note.title
+            body.text = note.body
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, color))
             itemView.setOnClickListener { onItemClickListener(note) }
         }
     }

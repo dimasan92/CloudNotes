@@ -4,7 +4,7 @@ import ru.dimasan92.cloudnotes.data.Repository
 import ru.dimasan92.cloudnotes.data.errors.NoAuthException
 import ru.dimasan92.cloudnotes.ui.base.BaseViewModel
 
-class SplashViewModel(private val repository: Repository = Repository) :
+class SplashViewModel(private val repository: Repository) :
     BaseViewModel<Boolean?, SplashViewState>() {
 
     fun requestUser() {
